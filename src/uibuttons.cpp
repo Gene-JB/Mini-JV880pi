@@ -36,7 +36,8 @@ CUIButton::CUIButton (void)
 	m_doubleClickEvent(BtnEventNone),
 	m_longPressEvent(BtnEventNone),
 	m_doubleClickTimeout(0),
-	m_longPressTimeout(0)
+	m_longPressTimeout(0),
+	m_released(false)
 {
 }
 
@@ -52,6 +53,7 @@ void CUIButton::reset (void)
 {
 	m_timer = m_longPressTimeout;
 	m_numClicks = 0;
+	m_released = false;
 }
 
 boolean CUIButton::Initialize (unsigned pinNumber, unsigned doubleClickTimeout, unsigned longPressTimeout)
@@ -127,6 +129,11 @@ CUIButton::BtnTrigger CUIButton::ReadTrigger (void)
 			}
 		}
 	}
+	if (m_released && m_timer >= m_doubleClickTimeout) {
+		m_released = false;
+		reset();
+		return BtnTriggerRelease;
+	}
 
 	// Debounce here - we don't need to do anything if the debounce timer is active
 	if (m_debounceTimer < DEBOUNCE_TIME) {
@@ -180,6 +187,10 @@ CUIButton::BtnTrigger CUIButton::ReadTrigger (void)
 				// This is the second release in a short period of time
 				reset();
 				return BtnTriggerDoubleClick;
+			} 
+			else if (m_numClicks == 1 && m_timer < m_doubleClickTimeout) {
+				// Released after first click — wait for potential second click
+				m_released = true; // новый флаг в классе
 			}
 		}
 	}
@@ -198,6 +209,9 @@ CUIButton::BtnEvent CUIButton::Read (void) {
 	}
 	else if (trigger == BtnTriggerLongPress) {
 		return m_longPressEvent;
+	} 
+	else if (trigger == BtnTriggerRelease) {
+    	return BtnEventRelease;
 	}
 
 	assert (trigger == BtnTriggerNone);

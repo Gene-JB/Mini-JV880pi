@@ -447,7 +447,7 @@ void CUserInterface::EncoderEventStub (CKY040::TEvent Event, void *pParam)
 void CUserInterface::UIButtonsEventHandler (CUIButton::BtnEvent Event)
 {
 	uint32_t btn = 0;
-	if (Event == CUIButton::BtnEventNone) {
+	if (Event == CUIButton::BtnEventRelease) {
         btn = 0; 
     }
 	if (Event == CUIButton::BtnEventPreview) {
@@ -520,7 +520,7 @@ void CUserInterface::UIButtonsEventHandler (CUIButton::BtnEvent Event)
 	} else {
 		btn &= ~(1 << MCU_BUTTON_ENTER);
 	}
-	//LOGNOTE("Button: %x", btn);
+	//LOGNOTE("Button from userinterface %x", btn);
 	m_pMiniJV880->mcu.mcu_button_pressed = btn;
 }
 

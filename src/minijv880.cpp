@@ -240,7 +240,7 @@ void CMiniJV880::ParseMIDIData(CMiniJV880* pThis, const u8* pData, unsigned nLen
                                 // нажали
                                 pThis->m_UI.TriggerUIButtonEvent(ev);
                             } else {
-                                pThis->m_UI.TriggerUIButtonEvent(CUIButton::BtnEventNone);
+                                pThis->m_UI.TriggerUIButtonEvent(CUIButton::BtnEventRelease);
                             }
                             i += 2;
                             return true;

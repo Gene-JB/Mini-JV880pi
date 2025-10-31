@@ -39,7 +39,8 @@ public:
 		BtnTriggerNone = 0,
 		BtnTriggerClick = 1,
 		BtnTriggerDoubleClick = 2,
-		BtnTriggerLongPress = 3
+		BtnTriggerLongPress = 3,
+		BtnTriggerRelease = 4
 	};
 
 	enum BtnEvent
@@ -59,7 +60,8 @@ public:
 		BtnEventMonitor = 12,
 		BtnEventCompare = 13,
 		BtnEventEnter = 14,
-		BtnEventUnknown = 15
+		BtnEventUnknown = 15,
+		BtnEventRelease = 16
 	};
 	
 	CUIButton (void);
@@ -103,6 +105,7 @@ private:
 	unsigned m_doubleClickTimeout;
 	// Timeout for long press in tenths of a millisecond
 	unsigned m_longPressTimeout;
+	bool m_released;
 };
 
 class CUIButtons
